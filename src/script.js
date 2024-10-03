@@ -550,6 +550,19 @@ function mapVelocityToRange(velocity, min, max) {
   return Math.floor(min + (max - min) * (velocity / 127));
 }
 
+const colorPalettes = [
+  { dark: "#991f00", light: "#33FFBD" }, // Deep red and teal green
+  { dark: "#8B8000", light: "#1E90FF" }, // Dark gold and royal blue
+  { dark: "#8B3A3A", light: "#4682B4" }, // Dark brick red and steel blue
+  { dark: "#551A8B", light: "#7FFF00" }, // Dark purple and lime green
+  { dark: "#8B2500", light: "#00CED1" }, // Deep orange red and dark turquoise
+  { dark: "#8B0A50", light: "#00FA9A" }, // Dark pink and medium spring green
+  { dark: "#103366", light: "#bfa3ff" }, // Dark navy blue and light lavender
+  { dark: "#228B22", light: "#DC143C" }, // Deep forest green and crimson
+  { dark: "#8B4500", light: "#1E90FF" }, // Dark burnt orange and dodger blue
+  { dark: "#8B3A62", light: "#4169E1" },
+];
+
 let rotationY;
 let rotationX;
 
@@ -566,7 +579,7 @@ function getMIDIMessage(message) {
         case 1: // Knob 1
           waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
             3,
-            (velocity / 127) * 20
+            (velocity / 127) * 8
           );
           break;
 
@@ -679,20 +692,11 @@ function getMIDIMessage(message) {
     if (holder.children[0].name === "voronoi") {
       switch (note) {
         case 36: // Pad 1
-          let lightRed = Math.random() * 0.7 + 0.3;
-          let lightGreen = Math.random() * 0.7 + 0.3;
-          let lightBlue = Math.random() * 0.7 + 0.3;
-
           let darkRed = Math.random() * 0.3;
           let darkGreen = Math.random() * 0.3;
           let darkBlue = Math.random() * 0.3;
 
           voronoiMaterial.uniforms.uColor.value = new THREE.Color(
-            lightRed,
-            lightGreen,
-            lightBlue
-          );
-          voronoiMaterial.uniforms.uDepthColor.value = new THREE.Color(
             darkRed,
             darkGreen,
             darkBlue
@@ -722,15 +726,16 @@ function getMIDIMessage(message) {
     } else if (holder.children[0].name === "water") {
       switch (note) {
         case 36: // Pad 1
-          let darkRed = Math.random() * 0.3;
-          let darkGreen = Math.random() * 0.3;
-          let darkBlue = Math.random() * 0.3;
+          const randomPalette =
+            colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
 
-          waterMaterial.uniforms.uSurfaceColor.value = new THREE.Color(
-            darkRed,
-            darkGreen,
-            darkBlue
-          );
+          // Convert light and dark colors to THREE.js color format
+          let lightColor = new THREE.Color(randomPalette.light);
+          let darkColor = new THREE.Color(randomPalette.dark);
+
+          // Assign colors to the material
+          waterMaterial.uniforms.uSurfaceColor.value = lightColor;
+          waterMaterial.uniforms.uDepthColor.value = darkColor;
           break;
       }
     } else if (holder.children[0].name === "disco") {
