@@ -461,7 +461,7 @@ disco.material = new THREE.ShaderMaterial({
     uTexture: { value: logoTextureOriginal },
     uColor: { value: new THREE.Color(0xff004f) },
     uAmplitude: { value: 0.5 },
-    uSpeed: { value: 0.5 },
+    uSpeed: { value: 1.0 },
   },
 
   //   blending: THREE.CustomBlending,
@@ -566,19 +566,19 @@ function getMIDIMessage(message) {
         case 1: // Knob 1
           waterMaterial.uniforms.uBigWavesElevation.value = Math.min(
             1,
-            velocity / 127
+            (velocity / 127) * 0.5
           );
           break;
 
         case 2: // Knob 2
           waterMaterial.uniforms.uSmallWavesElevation.value = Math.min(
             1,
-            velocity / 127
+            (velocity / 127) * 0.5
           );
 
           waterMaterial.uniforms.uSmallWavesFrequency.value = Math.min(
-            10,
-            (velocity / 127) * 10
+            2,
+            (velocity / 127) * 4
           );
           break;
       }
@@ -586,8 +586,8 @@ function getMIDIMessage(message) {
       switch (note) {
         case 1: // Knob 1
           voronoiMaterial.uniforms.uVoronoiScale.value = Math.min(
-            50.0,
-            Math.max(3.0, (velocity / 127) * 50)
+            25.0,
+            Math.max(3.0, (velocity / 127) * 25)
           );
           break;
 
@@ -622,7 +622,7 @@ function getMIDIMessage(message) {
     } else if (holder.children[0].name === "disco") {
       switch (note) {
         case 1: // Knob 1
-          targetSpeedMultiplier = Math.max(1, (velocity / 127) * 3);
+          targetSpeedMultiplier = Math.max(2, (velocity / 127) * 8);
           break;
       }
     }
@@ -746,8 +746,8 @@ function onMIDIFailure() {
 
 const lerp = (start, end, alpha) => start * (1 - alpha) + end * alpha;
 
-let targetSpeedMultiplier = 1;
-let currentSpeedMultiplier = 1;
+let targetSpeedMultiplier = 2;
+let currentSpeedMultiplier = 2;
 
 /**
  * Animate

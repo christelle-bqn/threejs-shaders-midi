@@ -50,11 +50,11 @@ void main()
     vec4 color = vec4(0.0);
     float total = 0.0;
 
-    for(float i = 0.; i < 20.; i++) {
-        float lerp = (i + rand(vec2(gl_FragCoord.xy))) / 20.;
+    for(float i = 0.; i < 30.; i++) {
+        float lerp = (i + rand(vec2(gl_FragCoord.xy))) / 30.;
         float weight = sin(lerp * PI);
 
-        vec4 mysample = texture2D(uTexture, vUv + toCenter * lerp * 0.5);
+        vec4 mysample = texture2D(uTexture, vUv + toCenter * lerp * 0.35);
         mysample.rgb *= mysample.a;
         color += mysample * weight;
         total += weight;
