@@ -32,6 +32,7 @@ import discoFragmentPostShader from "./shaders/disco/fragmentPost.glsl";
 // Debug
 const gui = new GUI({ width: 340 });
 const debugObject = {};
+gui.hide();
 
 /**
  * Sizes
