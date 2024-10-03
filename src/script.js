@@ -193,8 +193,8 @@ function updateGeometry() {
 const waterGeometry = new THREE.PlaneGeometry(2, 2, 512, 512);
 
 // Color
-debugObject.depthColor = "#113e78"; //"#186691";
-debugObject.surfaceColor = "#a584f0"; //"#9bd8ff";
+debugObject.depthColor = "#154a8e"; //"#186691";
+debugObject.surfaceColor = "#bfa3ff"; //"#9bd8ff";
 
 // Material
 const waterMaterial = new THREE.ShaderMaterial({
@@ -319,7 +319,7 @@ holder.add(water);
 /**
  * Voronoi
  */
-const voronoiGeometry = new THREE.PlaneGeometry(2, 2, 100, 100);
+const voronoiGeometry = new THREE.PlaneGeometry(4, 4, 32, 32);
 
 // Material
 const voronoiMaterial = new THREE.ShaderMaterial({
@@ -474,7 +474,7 @@ disco.material = new THREE.ShaderMaterial({
 const discoball = new THREE.Mesh(disco.geometry, disco.material);
 discoball.rotation.z = -Math.PI * 0.1;
 discoball.scale.set(1.5, 1.5, 1.5);
-discoball.position.y = -0.25;
+discoball.position.y = -0.1;
 discoball.name = "disco";
 
 scene.add(holder);
@@ -503,7 +503,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0, 0, 2.25);
+camera.position.set(0, 0, 2.3);
 scene.add(camera);
 
 // Controls
