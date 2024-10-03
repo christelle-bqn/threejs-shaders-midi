@@ -564,23 +564,30 @@ function getMIDIMessage(message) {
       console.log("WATER");
       switch (note) {
         case 1: // Knob 1
-          waterMaterial.uniforms.uBigWavesElevation.value = Math.max(
-            0.2,
-            (velocity / 127) * 0.5
-          );
-          break;
-
-        case 2: // Knob 2
-          waterMaterial.uniforms.uSmallWavesElevation.value = Math.max(
-            0.15,
-            (velocity / 127) * 0.5
-          );
-
           waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
             1,
             (velocity / 127) * 4
           );
           break;
+
+        // case 1: // Knob 1
+        //   waterMaterial.uniforms.uBigWavesElevation.value = Math.max(
+        //     0.2,
+        //     (velocity / 127) * 0.5
+        //   );
+        //   break;
+
+        // case 2: // Knob 2
+        //   waterMaterial.uniforms.uSmallWavesElevation.value = Math.max(
+        //     0.15,
+        //     (velocity / 127) * 0.5
+        //   );
+
+        //   waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
+        //     1,
+        //     (velocity / 127) * 4
+        //   );
+        //   break;
       }
     } else if (holder.children[0].name === "voronoi") {
       switch (note) {
@@ -704,6 +711,27 @@ function getMIDIMessage(message) {
           break;
       }
     } else if (holder.children[0].name === "water") {
+      switch (note) {
+        case 36: // Pad 1
+          let darkRed = Math.random() * 0.3;
+          let darkGreen = Math.random() * 0.3;
+          let darkBlue = Math.random() * 0.3;
+
+          waterMaterial.uniforms.uDepthColor.value = new THREE.Color(
+            darkRed,
+            darkGreen,
+            darkBlue
+          );
+
+          waterMaterial.uniforms.uSurfaceColor.value = new THREE.Color(
+            darkRed,
+            darkGreen,
+            darkBlue
+          );
+          break;
+
+          waterMaterial.uniforms.uColor;
+      }
     } else if (holder.children[0].name === "disco") {
       switch (note) {
         case 36: // Pad 1
