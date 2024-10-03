@@ -12,10 +12,23 @@ import voronoiFragmentShader from "./shaders/voronoi/fragment.glsl";
 import discoVertexShader from "./shaders/disco/vertex.glsl";
 import discoFragmentShader from "./shaders/disco/fragment.glsl";
 import discoFragmentPostShader from "./shaders/disco/fragmentPost.glsl";
+//import Stats from "three/examples/jsm/libs/stats.module.js";
 
 /**
  * Base
  */
+
+// // Stats
+// let stats1 = new Stats();
+// stats1.showPanel(0); // Panel 0 = fps
+// stats1.domElement.style.cssText = "position:absolute;top:0px;left:0px;";
+// document.body.appendChild(stats1.domElement);
+
+// let stats2 = new Stats();
+// stats2.showPanel(1); // Panel 1 = ms
+// stats2.domElement.style.cssText = "position:absolute;top:0px;left:80px;";
+// document.body.appendChild(stats2.domElement);
+
 // Debug
 const gui = new GUI({ width: 340 });
 const debugObject = {};
@@ -744,6 +757,10 @@ const clock = new THREE.Clock();
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  // // Stats
+  // stats1.update();
+  // stats2.update();
 
   // Update water
   waterMaterial.uniforms.uTime.value = elapsedTime;
