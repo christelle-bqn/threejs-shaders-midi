@@ -209,8 +209,8 @@ const waterMaterial = new THREE.ShaderMaterial({
 
     uDepthColor: { value: new THREE.Color(debugObject.depthColor) },
     uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) },
-    uColorOffset: { value: 0.08 },
-    uColorMultiplier: { value: 1.8 },
+    uColorOffset: { value: 0.1 },
+    uColorMultiplier: { value: 2.3 },
 
     uSmallWavesElevation: { value: 0.15 },
     uSmallWavesFrequency: { value: 3 },
@@ -551,17 +551,14 @@ function mapVelocityToRange(velocity, min, max) {
 }
 
 const colorPalettes = [
-  { dark: "#991f00", light: "#33FFBD" }, // Deep red and teal green
-  { dark: "#8B8000", light: "#1E90FF" }, // Dark gold and royal blue
-  { dark: "#8B3A3A", light: "#4682B4" }, // Dark brick red and steel blue
-  { dark: "#551A8B", light: "#7FFF00" }, // Dark purple and lime green
-  { dark: "#8B2500", light: "#00CED1" }, // Deep orange red and dark turquoise
-  { dark: "#8B0A50", light: "#00FA9A" }, // Dark pink and medium spring green
-  { dark: "#103366", light: "#bfa3ff" }, // Dark navy blue and light lavender
-  { dark: "#228B22", light: "#DC143C" }, // Deep forest green and crimson
-  { dark: "#8B4500", light: "#1E90FF" }, // Dark burnt orange and dodger blue
-  { dark: "#8B3A62", light: "#4169E1" },
+  { dark: "#154a8e", light: "#bfa3ff" },
+  { dark: "#007349", light: "#f2e153" },
+  { dark: "#186691", light: "#9bd8ff" },
+  { dark: "#34936c", light: "#ff42bd" },
+  { dark: "#7f5233", light: "#ffe354" },
 ];
+
+let lastIndexColorPalette = 0;
 
 let rotationY;
 let rotationX;
@@ -577,11 +574,8 @@ function getMIDIMessage(message) {
       console.log("WATER");
       switch (note) {
         case 1: // Knob 1
-          waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
-            3,
-            (velocity / 127) * 8
-          );
-          break;
+        // targetSpeedMultiplier = Math.max(2, (velocity / 127) * 4);
+        // break;
 
         // case 1: // Knob 1
         //   waterMaterial.uniforms.uBigWavesElevation.value = Math.max(
@@ -642,7 +636,7 @@ function getMIDIMessage(message) {
     } else if (holder.children[0].name === "disco") {
       switch (note) {
         case 1: // Knob 1
-          targetSpeedMultiplier = Math.max(2, (velocity / 127) * 8);
+          targetSpeedMultiplier = Math.max(2, (velocity / 127) * 4);
           break;
       }
     }
@@ -726,12 +720,17 @@ function getMIDIMessage(message) {
     } else if (holder.children[0].name === "water") {
       switch (note) {
         case 36: // Pad 1
-          const randomPalette =
-            colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+          const colorPalette =
+            colorPalettes[lastIndexColorPalette + 1] || colorPalettes[0];
+
+          lastIndexColorPalette += 1;
+          if (lastIndexColorPalette >= colorPalettes.length) {
+            lastIndexColorPalette = 0;
+          }
 
           // Convert light and dark colors to THREE.js color format
-          let lightColor = new THREE.Color(randomPalette.light);
-          let darkColor = new THREE.Color(randomPalette.dark);
+          let lightColor = new THREE.Color(colorPalette.light);
+          let darkColor = new THREE.Color(colorPalette.dark);
 
           // Assign colors to the material
           waterMaterial.uniforms.uSurfaceColor.value = lightColor;
@@ -819,6 +818,8 @@ const tick = () => {
   );
 
   discoball.rotation.y = -elapsedTime * 0.1 * currentSpeedMultiplier;
+
+  water.rotation.z = -elapsedTime * 0.1 * currentSpeedMultiplier;
 
   // Update controls
   controls.update();
