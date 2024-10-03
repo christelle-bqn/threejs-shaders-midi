@@ -564,20 +564,20 @@ function getMIDIMessage(message) {
       console.log("WATER");
       switch (note) {
         case 1: // Knob 1
-          waterMaterial.uniforms.uBigWavesElevation.value = Math.min(
-            1,
+          waterMaterial.uniforms.uBigWavesElevation.value = Math.max(
+            0.2,
             (velocity / 127) * 0.5
           );
           break;
 
         case 2: // Knob 2
-          waterMaterial.uniforms.uSmallWavesElevation.value = Math.min(
-            1,
+          waterMaterial.uniforms.uSmallWavesElevation.value = Math.max(
+            0.15,
             (velocity / 127) * 0.5
           );
 
-          waterMaterial.uniforms.uSmallWavesFrequency.value = Math.min(
-            2,
+          waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
+            1,
             (velocity / 127) * 4
           );
           break;
