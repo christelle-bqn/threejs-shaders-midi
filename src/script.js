@@ -563,17 +563,23 @@ function getMIDIMessage(message) {
     if (holder.children[0].name === "water") {
       console.log("WATER");
       switch (note) {
-        case 1: // Knob 5
-          waterMaterial.uniforms.uBigWavesElevation.value = velocity / 127;
+        case 1: // Knob 1
+          waterMaterial.uniforms.uBigWavesElevation.value = Math.min(
+            1,
+            velocity / 127
+          );
           break;
 
-        case 2: // Knob 6
-          waterMaterial.uniforms.uSmallWavesElevation.value = velocity / 127;
-          break;
+        case 2: // Knob 2
+          waterMaterial.uniforms.uSmallWavesElevation.value = Math.min(
+            1,
+            velocity / 127
+          );
 
-        case 3: // Knob 7
-          waterMaterial.uniforms.uSmallWavesFrequency.value =
-            (velocity / 127) * 4.0;
+          waterMaterial.uniforms.uSmallWavesFrequency.value = Math.min(
+            10,
+            (velocity / 127) * 10
+          );
           break;
       }
     } else if (holder.children[0].name === "voronoi") {
@@ -590,18 +596,9 @@ function getMIDIMessage(message) {
             10.0,
             (velocity / 127) * 10
           );
-          break;
 
-        case 3: // Knob 3
           voronoiMaterial.uniforms.uWaveAmplitude.value = Math.min(
             1.0,
-            velocity / 127
-          );
-          break;
-
-        case 4: // Knob 4
-          voronoiMaterial.uniforms.uRotationAngle.value = Math.min(
-            0.0,
             velocity / 127
           );
           break;
@@ -625,7 +622,7 @@ function getMIDIMessage(message) {
     } else if (holder.children[0].name === "disco") {
       switch (note) {
         case 1: // Knob 1
-          targetSpeedMultiplier = Math.max(1, (velocity / 127) * 5);
+          targetSpeedMultiplier = Math.max(1, (velocity / 127) * 3);
           break;
       }
     }
@@ -784,7 +781,7 @@ const tick = () => {
   currentSpeedMultiplier = lerp(
     currentSpeedMultiplier,
     targetSpeedMultiplier,
-    0.05
+    0.1
   );
 
   discoball.rotation.y = -elapsedTime * 0.1 * currentSpeedMultiplier;
