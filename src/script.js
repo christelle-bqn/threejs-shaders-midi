@@ -717,20 +717,12 @@ function getMIDIMessage(message) {
           let darkGreen = Math.random() * 0.3;
           let darkBlue = Math.random() * 0.3;
 
-          waterMaterial.uniforms.uDepthColor.value = new THREE.Color(
-            darkRed,
-            darkGreen,
-            darkBlue
-          );
-
           waterMaterial.uniforms.uSurfaceColor.value = new THREE.Color(
             darkRed,
             darkGreen,
             darkBlue
           );
           break;
-
-          waterMaterial.uniforms.uColor;
       }
     } else if (holder.children[0].name === "disco") {
       switch (note) {
