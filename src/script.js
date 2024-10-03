@@ -565,8 +565,8 @@ function getMIDIMessage(message) {
       switch (note) {
         case 1: // Knob 1
           waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
-            1,
-            (velocity / 127) * 4
+            3,
+            (velocity / 127) * 20
           );
           break;
 
@@ -679,11 +679,20 @@ function getMIDIMessage(message) {
     if (holder.children[0].name === "voronoi") {
       switch (note) {
         case 36: // Pad 1
+          let lightRed = Math.random() * 0.7 + 0.3;
+          let lightGreen = Math.random() * 0.7 + 0.3;
+          let lightBlue = Math.random() * 0.7 + 0.3;
+
           let darkRed = Math.random() * 0.3;
           let darkGreen = Math.random() * 0.3;
           let darkBlue = Math.random() * 0.3;
 
           voronoiMaterial.uniforms.uColor.value = new THREE.Color(
+            lightRed,
+            lightGreen,
+            lightBlue
+          );
+          voronoiMaterial.uniforms.uDepthColor.value = new THREE.Color(
             darkRed,
             darkGreen,
             darkBlue
