@@ -12,7 +12,9 @@ import voronoiFragmentShader from "./shaders/voronoi/fragment.glsl";
 import discoVertexShader from "./shaders/disco/vertex.glsl";
 import discoFragmentShader from "./shaders/disco/fragment.glsl";
 import discoFragmentPostShader from "./shaders/disco/fragmentPost.glsl";
-//import Stats from "three/examples/jsm/libs/stats.module.js";
+// import cloudsFragmentShader from "./shaders/clouds/fragment.glsl";
+// import cloudsVertexShader from "./shaders/clouds/vertex.glsl";
+// import Stats from "three/examples/jsm/libs/stats.module.js";
 
 /**
  * Base
@@ -314,12 +316,10 @@ water.position.y = 0;
 water.position.z = -0.5;
 water.scale.set(1.3, 1.3, 1.3);
 
-holder.add(water);
-
 /**
  * Voronoi
  */
-const voronoiGeometry = new THREE.PlaneGeometry(4, 4, 32, 32);
+const voronoiGeometry = new THREE.PlaneGeometry(4, 4, 1, 1);
 
 // Material
 const voronoiMaterial = new THREE.ShaderMaterial({
@@ -470,13 +470,35 @@ disco.material = new THREE.ShaderMaterial({
   side: THREE.DoubleSide,
 });
 
-// Points
+// Discoball mesh
 const discoball = new THREE.Mesh(disco.geometry, disco.material);
 discoball.rotation.z = -Math.PI * 0.1;
 discoball.scale.set(1.5, 1.5, 1.5);
 discoball.position.y = -0.1;
 discoball.name = "disco";
 
+// /**
+//  * Clouds
+//  */
+// const cloudsGeometry = new THREE.PlaneGeometry(4, 4, 1, 1);
+
+// const cloudsMaterial = new THREE.ShaderMaterial({
+//   vertexShader: cloudsVertexShader,
+//   fragmentShader: cloudsFragmentShader,
+//   uniforms: {
+//     uTime: { value: 0 },
+//     uCameraPos: { value: new THREE.Vector2(0, 0) },
+//     uZoomLevel: { value: 500.0 },
+//     uAspectRatio: { value: window.innerWidth / window.innerHeight },
+//   },
+//   transparent: true,
+//   side: THREE.DoubleSide,
+// });
+
+// const clouds = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
+// clouds.name = "clouds";
+
+holder.add(water);
 scene.add(holder);
 
 window.addEventListener("resize", () => {
@@ -570,33 +592,8 @@ function getMIDIMessage(message) {
 
   // Handle knobs (Control Change messages)
   if (command === 176) {
-    if (holder.children[0].name === "water") {
-      console.log("WATER");
-      switch (note) {
-        case 1: // Knob 1
-        // targetSpeedMultiplier = Math.max(2, (velocity / 127) * 4);
-        // break;
-
-        // case 1: // Knob 1
-        //   waterMaterial.uniforms.uBigWavesElevation.value = Math.max(
-        //     0.2,
-        //     (velocity / 127) * 0.5
-        //   );
-        //   break;
-
-        // case 2: // Knob 2
-        //   waterMaterial.uniforms.uSmallWavesElevation.value = Math.max(
-        //     0.15,
-        //     (velocity / 127) * 0.5
-        //   );
-
-        //   waterMaterial.uniforms.uSmallWavesFrequency.value = Math.max(
-        //     1,
-        //     (velocity / 127) * 4
-        //   );
-        //   break;
-      }
-    } else if (holder.children[0].name === "voronoi") {
+    if (holder.children[0].name === "water") return;
+    if (holder.children[0].name === "voronoi") {
       switch (note) {
         case 1: // Knob 1
           voronoiMaterial.uniforms.uVoronoiScale.value = Math.min(
@@ -793,6 +790,9 @@ const tick = () => {
   // // Stats
   // stats1.update();
   // stats2.update();
+
+  // Update clouds
+  //cloudsMaterial.uniforms.uTime.value = elapsedTime;
 
   // Update water
   waterMaterial.uniforms.uTime.value = elapsedTime;
